@@ -1,0 +1,21 @@
+{% load static %}
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Map Game</title>
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<div id="map-container">
+    <!-- Include SVG map code here -->
+    <svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+        <!-- SVG paths for different countries or regions -->
+        <path d="M100,100 L200,100 L200,200 L100,200 Z" fill="blue" stroke="black"/>
+        <!-- Add more paths for other countries -->
+    </svg>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

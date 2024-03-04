@@ -1,0 +1,47 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Guesser Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 50px;
+        }
+        #start-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #start-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Country Guesser Game!</h1>
+    <p>Click the button below to start guessing countries.</p>
+    <button id="start-button" onclick="startGame()">Start Game</button>
+
+    <script>
+        function startGame() {
+            // Redirect to the game page when the button is clicked
+            window.location.href = "/map-game/";
+        }
+    </script>
+</body>
+       
+    
+{% endblock content  %}
