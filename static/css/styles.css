@@ -10863,3 +10863,50 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
     margin-left: -15rem;
   }
 }
+
+
+#map-container {
+    width: 100%;
+    height: 80vh; /* Adjust the height as needed */
+    max-width: 1000px; /* Optional: Set maximum width */
+    margin: 0 auto; /* Center the map horizontally */
+    overflow: hidden; /* Hide overflow */
+}
+
+#map-svg {
+    width: 100%;
+    height: 100%;
+}
+
+
+#game-box {
+    width: 600px; /* Adjust width as needed */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add shadow */
+}
+
+body {
+        margin: 0;
+        padding: 0;
+        background-color: #44a3ef;
+        overflow-y: hidden;
+        overflow-x: hidden;
+    }
+    svg path {
+        cursor: pointer;
+    }
+    svg path:hover {
+        fill: pink;
+    }
+    #game-box {
+        background-color: #0859C6;
+    width: 90%; /* Adjust the width as needed */
+    margin: 0 auto; /* Center the box horizontally */
+    border: 2px solid #ccc; /* Add border for visual separation */
+    padding: 20px; /* Add some padding for spacing */
+    box-sizing: border-box; /* Include padding and border in the box's total width */
+}
