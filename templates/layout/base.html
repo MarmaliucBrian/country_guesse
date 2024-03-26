@@ -13,6 +13,13 @@
     <link href="{% static 'css/styles.css' %} " rel="stylesheet"/>
 </head>
 <body>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 {% include 'layout/menu.html' %}
 <!-- Page Content-->
 <div class="container px-4 px-lg-5">
