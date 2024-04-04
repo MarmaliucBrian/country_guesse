@@ -22,5 +22,6 @@ from map_game.views import HomeView
 urlpatterns = [
 
     path('admin/', admin.site.urls),
-    path('', include('map_game.urls'))
+    path('', include('map_game.urls')),
+    path('', include('scores.urls')),
 ]

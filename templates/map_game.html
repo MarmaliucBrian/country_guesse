@@ -137,87 +137,143 @@
  </circle>
 </svg>
 </div>
-        <button id="start-button">Start Game</button>
+        
         <div id="timer"></div>
         <div id="score">Score: <span id="score-value">0</span></div>
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-            const countries = ["Andorra", "Austria", "Belgium", "Bulgaria", "Bosnia and Herzegovina",
-                "Belarus", "Switzerland", "Czech Republic", "Germany", "Denmark", "Estonia",
-                "Finland", "United Kingdom", "Greece", "Croatia", "Hungary",
-                "Ireland", "Iceland", "Italy", "Liechtenstein", "Lithuania", "Luxembourg",
-                "Latvia", "Moldova", "Macedonia", "Montenegro", "Norway", "Poland",
-                "Portugal", "Romania", "Serbia", "Slovakia", "Slovenia", "Sweden",
-                "Ukraine", "Kosovo", "Netherlands", "Spain", "France", "Cyprus"];
+ document.addEventListener('DOMContentLoaded', function () {
+    const countries = ["Andorra", "Austria", "Belgium", "Bulgaria", "Bosnia and Herzegovina",
+        "Belarus", "Switzerland", "Czech Republic", "Germany", "Denmark", "Estonia",
+        "Finland", "United Kingdom", "Greece", "Croatia", "Hungary",
+        "Ireland", "Iceland", "Italy", "Liechtenstein", "Lithuania", "Luxembourg",
+        "Latvia", "Moldova", "Macedonia", "Montenegro", "Norway", "Poland",
+        "Portugal", "Romania", "Serbia", "Slovakia", "Slovenia", "Sweden",
+        "Ukraine", "Kosovo", "Netherlands", "Spain", "France", "Cyprus"];
 
-            let targetCountry;
-            let guessedCountries = [];
-            let startTime;
-            let score = 0;
-            let gameStarted = false;
+    let targetCountry;
+    let guessedCountries = [];
+    let startTime;
+    let score = 0;
+    let gameStarted = false;
+    let userId = 1; // Replace with actual user ID
 
-            function startTimer() {
-                startTime = new Date().getTime();
-                updateTimer();
-            }
+    // Function to start the timer
+    function startTimer() {
+        startTime = new Date().getTime();
+        updateTimer();
+    }
 
-            function updateTimer() {
-                const currentTime = new Date().getTime();
-                const elapsedTime = currentTime - startTime;
-                const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
-                document.getElementById('timer').innerText = minutes + "m " + seconds + "s";
-                setTimeout(updateTimer, 1000);
-            }
+    // Function to update the timer
+    function updateTimer() {
+        const currentTime = new Date().getTime();
+        const elapsedTime = currentTime - startTime;
+        const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+        document.getElementById('timer').innerText = minutes + "m " + seconds + "s";
+        setTimeout(updateTimer, 1000);
+    }
 
-            function chooseNextTargetCountry() {
-                const remainingCountries = countries.filter(country => !guessedCountries.includes(country));
-                if (remainingCountries.length === 0) {
-                    console.log("Congratulations! You have guessed all the countries.");
-                    return;
-                }
-                targetCountry = remainingCountries[Math.floor(Math.random() * remainingCountries.length)];
-                updateTargetCountry(targetCountry); // Update HTML display
-                startTimer(); // Start the timer when a new country is chosen
-            }
+    // Function to choose the next target country
+    function chooseNextTargetCountry() {
+        const remainingCountries = countries.filter(country => !guessedCountries.includes(country));
+        if (remainingCountries.length === 0) {
+            console.log("Congratulations! You have guessed all the countries.");
+            // Check if the game is completed and record the score
+            handleGameCompletion();
+            return;
+        }
+        targetCountry = remainingCountries[Math.floor(Math.random() * remainingCountries.length)];
+        updateTargetCountry(targetCountry); // Update HTML display
+        startTimer(); // Start the timer when a new country is chosen
+    }
 
-            function updateTargetCountry(newTargetCountry) {
-                document.getElementById('target-country').innerText = newTargetCountry;
-            }
+    // Function to update the target country display
+    function updateTargetCountry(newTargetCountry) {
+        document.getElementById('target-country').innerText = newTargetCountry;
+    }
 
-            document.getElementById("map-container").addEventListener("click", function (event) {
-                if (event.target.classList.contains("country-path")) {
-                    const clickedCountry = event.target.getAttribute("data-country");
-                    if (clickedCountry === targetCountry) {
-                        guessedCountries.push(clickedCountry);
-                        const elapsedTimeInSeconds = Math.floor((new Date().getTime() - startTime) / 1000);
-                        const points = Math.max(0, 10 - Math.floor(elapsedTimeInSeconds / 5)); // Adjust scoring logic as needed
-                        score += points;
-                        document.getElementById('score-value').innerText = score;
-                        console.log("Congratulations! You guessed correctly in " + elapsedTimeInSeconds + " seconds and earned " + points + " points.");
-                        chooseNextTargetCountry();
-                    }
-                }
-            });
+    // Function to check if all countries are guessed
+    function checkGameCompletion() {
+        return guessedCountries.length === countries.length;
+    }
 
-            document.getElementById("start-button").addEventListener("click", function () {
-                if (!gameStarted) {
-                    guessedCountries = []; // Reset guessed countries
-                    score = 0; // Reset score
-                    document.getElementById('score-value').innerText = score; // Update score display
-                    chooseNextTargetCountry(); // Start the game when the button is clicked
-                    gameStarted = true;
-                    document.getElementById('start-button').innerText = 'Reset Game';
+    // Function to handle game completion
+    function handleGameCompletion() {
+        if (checkGameCompletion()) {
+            console.log("Congratulations! You have guessed all the countries.");
+            // Record the score
+            recordScore(userId, score);
+        }
+    }
+
+    // Event listener for clicking on countries
+    document.querySelectorAll('.country-path').forEach(country => {
+        country.addEventListener('click', function () {
+            console.log("Clicked country:", this.getAttribute('data-country'));
+            console.log("Target country:", targetCountry);
+
+            // Check if the game is started
+            if (gameStarted) {
+                // If the clicked country is the target country
+                if (this.getAttribute('data-country') === targetCountry) {
+                    // Change color to pink
+                    this.style.fill = 'pink'; // Change to the desired color
+                    // Add the country to the guessed list
+                    guessedCountries.push(targetCountry); // Assuming the country id matches its name
+                    // Increase the score
+                    const elapsedTimeInSeconds = Math.floor((new Date().getTime() - startTime) / 1000);
+                    const points = Math.max(0, 10 - Math.floor(elapsedTimeInSeconds / 5)); // Adjust scoring logic as needed
+                    score += points;
+                    document.getElementById('score-value').innerText = score;
+                    // Choose the next target country
+                    chooseNextTargetCountry();
+                    // Check if the game is completed
+                    handleGameCompletion();
                 } else {
-                    gameStarted = false;
-                    document.getElementById('start-button').innerText = 'Start Game';
-                    document.getElementById('timer').innerText = '';
-                    document.getElementById('score-value').innerText = '';
-                    guessedCountries = [];
-                    score = 0;
+                    // If the clicked country is not the target country, you can add your logic here.
+                    // For example, you can display a message indicating that it's the wrong country.
+                    console.log("Wrong country clicked!");
                 }
-            });
+            }
         });
+    });
+
+    // Start the game automatically when the page loads
+    chooseNextTargetCountry();
+
+    // Display the first target country in the console
+    console.log("First target country:", targetCountry);
+
+    // Update gameStarted flag
+    gameStarted = true;
+});
+
+// Function to record the score
+function recordScore(userId, score) {
+    const requestBody = JSON.stringify({ userId, score });
+    console.log('Request Body:', requestBody); // Log requestBody for debugging
+
+    fetch('/api/scores/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: requestBody,
+    })
+    .then(response => {
+        console.log('Response Status:', response.status); // Log response status for debugging
+        if (!response.ok) {
+            throw new Error('Failed to record score');
+        }
+        console.log('Score recorded successfully');
+    })
+    .catch(error => {
+        console.error('Error recording score:', error);
+    });
+}
+
+         
+
     </script>
 </div>  
 

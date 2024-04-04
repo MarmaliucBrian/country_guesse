@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
@@ -7,6 +9,7 @@ from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -22,7 +25,7 @@ from map_game.models import CountryModels
 class MapGameView(TemplateView):
     template_name = 'map_game.html'
     countries = [
-        "Andorra", "Armenia", "Austria", "Belgium", "Bulgaria", "Bosnia and Herzegovina",
+        "Andorra", "Armenia", "Austria","Albania", "Belgium", "Bulgaria", "Bosnia and Herzegovina",
         "Belarus", "Switzerland", "Czech Republic", "Germany", "Denmark", "Estonia",
         "Finland", "United Kingdom", "Georgia", "Greece", "Croatia", "Hungary",
         "Ireland", "Iceland", "Italy", "Liechtenstein", "Lithuania", "Luxembourg",
@@ -182,3 +185,7 @@ def activate(request, uidb64, token):
         return redirect('home-page')
     else:
         return render(request, "authentication/activation_failed.html")
+
+
+
+
