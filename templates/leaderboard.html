@@ -1,0 +1,34 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+<!-- leaderboard.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaderboard</title>
+</head>
+<body>
+    <h1>Top 10 Highest Scores</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>User </th>
+                <th> Score </th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for score in top_scores %}
+<tr>
+    <td>{{ score.user__username }}</td>
+    <td>{{ score.max_score }}</td>
+    
+</tr>
+{% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+    
+{% endblock content  %}
