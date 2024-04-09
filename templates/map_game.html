@@ -42,6 +42,7 @@
 <h1>Guess the Country</h1>
 <p>Guess which country this is:</p>
 <p id="target-country">{{ target_country }}</p>
+    <div id="play-again-container"></div>
 <div id="map-container">
     <?xml version="1.0"?>
     <svg baseprofile="tiny" fill="#ececec" height="684" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".1" version="1.2" viewbox="0 0 1000 684" width="1000" xmlns="http://www.w3.org/2000/svg">
@@ -142,13 +143,7 @@
         <div id="score">Score: <span id="score-value">0</span></div>
 <script>
  document.addEventListener('DOMContentLoaded', function () {
-    const countries = ["Andorra", "Austria", "Belgium", "Bulgaria", "Bosnia and Herzegovina",
-        "Belarus", "Switzerland", "Czech Republic", "Germany", "Denmark", "Estonia",
-        "Finland", "United Kingdom", "Greece", "Croatia", "Hungary",
-        "Ireland", "Iceland", "Italy", "Liechtenstein", "Lithuania", "Luxembourg",
-        "Latvia", "Moldova", "Macedonia", "Montenegro", "Norway", "Poland",
-        "Portugal", "Romania", "Serbia", "Slovakia", "Slovenia", "Sweden",
-        "Ukraine", "Kosovo", "Netherlands", "Spain", "France", "Cyprus"];
+    const countries = ["Spain", "France", "Cyprus"];
 
     let targetCountry;
     let guessedCountries = [];
@@ -199,11 +194,55 @@
 
     // Function to handle game completion
     function handleGameCompletion() {
-        if (checkGameCompletion()) {
-            console.log("Congratulations! You have guessed all the countries.");
-            // Record the score
-            recordScore(userId, score);
+    if (checkGameCompletion()) {
+        console.log("Congratulations! You have guessed all the countries.");
+        // Record the score
+        recordScore(userId, score);
+        // Check if the "Play Again" button already exists
+        if (!document.getElementById('play-again-button')) {
+            // Create a "Play Again" button
+            const playAgainButton = document.createElement('button');
+            playAgainButton.textContent = 'Play Again';
+            playAgainButton.id = 'play-again-button'; // Set an id for event delegation
+            // Append the button to a container element
+            const container = document.getElementById('play-again-container');
+            container.appendChild(playAgainButton);
+            // Add event listener to the "Play Again" button
+            playAgainButton.addEventListener('click', function() {
+                location.reload(); // Reload the page
+            });
+            // Display the score popup
+            showScorePopup(score);
         }
+    }
+}
+
+    function showScorePopup(score) {
+        // Create a new <div> element for the popup
+        const popup = document.createElement('div');
+        popup.classList.add('score-popup');
+
+        // Set the content of the popup
+        popup.textContent = `Your score: ${score}`;
+
+        // Append the popup to the document body
+        document.body.appendChild(popup);
+
+        // Set the position of the popup
+        popup.style.position = 'fixed';
+        popup.style.top = '50%';
+        popup.style.left = '50%';
+        popup.style.transform = 'translate(-50%, -50%)';
+        popup.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+        popup.style.color = 'white';
+        popup.style.padding = '20px';
+        popup.style.borderRadius = '10px';
+        popup.style.zIndex = '9999';
+
+        // Set a timeout to remove the popup after a certain duration (e.g., 3 seconds)
+        setTimeout(() => {
+            popup.remove();
+        }, 3000); // 3000 milliseconds (3 seconds)
     }
 
     // Event listener for clicking on countries
@@ -261,7 +300,7 @@ function recordScore(userId, score) {
         body: requestBody,
     })
     .then(response => {
-        console.log('Response Status:', response.status); // Log response status for debugging
+        console.log('Response Status:', response.status); // Log response
         if (!response.ok) {
             throw new Error('Failed to record score');
         }
@@ -271,6 +310,7 @@ function recordScore(userId, score) {
         console.error('Error recording score:', error);
     });
 }
+
 
          
 
