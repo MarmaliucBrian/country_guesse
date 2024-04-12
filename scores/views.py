@@ -20,10 +20,10 @@ def record_score(request):
             if user_id is None or score_value is None:
                 return JsonResponse({'error': 'User ID and score are required'}, status=400)
 
-            # Assuming you have a user authentication system and the user is authenticated
+
             user = request.user
 
-            # Save the score to the database
+
             score = Scores.objects.create(user=user, score=score_value)
             score.save()
 
@@ -37,6 +37,6 @@ def record_score(request):
 
 
 def leaderboard(request):
-    # Query the highest score for each user
+
     top_scores = Scores.objects.values('user__username').annotate(max_score=Max('score')).order_by('-max_score')[:10]
     return render(request, 'leaderboard.html', {'top_scores': top_scores})

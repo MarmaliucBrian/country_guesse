@@ -96,16 +96,16 @@ def signup(request):
 
 
         if User.objects.filter(username=username).exists():
-            messages.error(request, 'Your username already exists')  # Use messages.error here
+            messages.error(request, 'Your username already exists')
             return render(request, 'authentication/signup.html')
 
         if User.objects.filter(email=email).exists():
-            messages.error(request, 'Your email already exists')  # Use messages.error here
+            messages.error(request, 'Your email already exists')
             return render(request, 'authentication/signup.html')
 
 
         if pass1 != pass2:
-            messages.error(request, 'Your password does not match')  # Use messages.error here
+            messages.error(request, 'Your password does not match')
             return render(request, 'authentication/signup.html')
 
         # Create user

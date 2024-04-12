@@ -15,7 +15,7 @@
     body {
         margin: 0;
         padding: 0;
-        background-color: #44a3ef;
+        background-color: #ffffff;
         overflow-y: hidden;
         overflow-x: hidden;
     }
@@ -27,11 +27,11 @@
     }
     #game-box {
         background-color: #0859C6;
-    width: 90%; /* Adjust the width as needed */
-    margin: 0 auto; /* Center the box horizontally */
-    border: 2px solid #ccc; /* Add border for visual separation */
-    padding: 20px; /* Add some padding for spacing */
-    box-sizing: border-box; /* Include padding and border in the box's total width */
+    width: 90%; 
+    margin: 0 auto; 
+    border: 2px solid #ccc; 
+    padding: 20px; 
+    box-sizing: border-box; 
 }
 
 </style>
@@ -224,17 +224,17 @@
 }
 
     function showScorePopup(score) {
-        // Create a new <div> element for the popup
+        
         const popup = document.createElement('div');
         popup.classList.add('score-popup');
 
-        // Set the content of the popup
+        
         popup.textContent = `Your score: ${score}`;
 
-        // Append the popup to the document body
+        
         document.body.appendChild(popup);
 
-        // Set the position of the popup
+        
         popup.style.position = 'fixed';
         popup.style.top = '50%';
         popup.style.left = '50%';
@@ -245,10 +245,10 @@
         popup.style.borderRadius = '10px';
         popup.style.zIndex = '9999';
 
-        // Set a timeout to remove the popup after a certain duration (e.g., 3 seconds)
+        
         setTimeout(() => {
             popup.remove();
-        }, 3000); // 3000 milliseconds (3 seconds)
+        }, 3000); 
     }
 
     // Event listener for clicking on countries
@@ -257,22 +257,22 @@
             console.log("Clicked country:", this.getAttribute('data-country'));
             console.log("Target country:", targetCountry);
 
-            // Check if the game is started
+           
             if (gameStarted) {
-                // If the clicked country is the target country
+               
                 if (this.getAttribute('data-country') === targetCountry) {
-                    // Change color to pink
-                    this.style.fill = 'pink'; // Change to the desired color
-                    // Add the country to the guessed list
-                    guessedCountries.push(targetCountry); // Assuming the country id matches its name
-                    // Increase the score
+                    
+                    this.style.fill = 'pink'; 
+                    
+                    guessedCountries.push(targetCountry); 
+                    
                     const elapsedTimeInSeconds = Math.floor((new Date().getTime() - startTime) / 1000);
-                    const points = Math.max(0, 10 - Math.floor(elapsedTimeInSeconds / 5)); // Adjust scoring logic as needed
+                    const points = Math.max(0, 10 - Math.floor(elapsedTimeInSeconds / 5)); 
                     score += points;
                     document.getElementById('score-value').innerText = score;
-                    // Choose the next target country
+                   
                     chooseNextTargetCountry();
-                    // Check if the game is completed
+                    
                     handleGameCompletion();
                 } else {
                     // If the clicked country is not the target country, you can add your logic here.
@@ -296,7 +296,7 @@
 // Function to record the score
 function recordScore(userId, score) {
     const requestBody = JSON.stringify({ userId, score });
-    console.log('Request Body:', requestBody); // Log requestBody for debugging
+    console.log('Request Body:', requestBody); 
 
     fetch('/api/scores/', {
         method: 'POST',
@@ -306,7 +306,7 @@ function recordScore(userId, score) {
         body: requestBody,
     })
     .then(response => {
-        console.log('Response Status:', response.status); // Log response
+        console.log('Response Status:', response.status); 
         if (!response.ok) {
             throw new Error('Failed to record score');
         }

@@ -8,6 +8,13 @@
 <head>
     <title>Leaderboard</title>
 </head>
+<style>
+     body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            text-align: center;
+        }
+</style>
 <body>
     <h1>Top 10 Highest Scores</h1>
     <table>
@@ -19,12 +26,14 @@
             </tr>
         </thead>
         <tbody>
+        
             {% for score in top_scores %}
 <tr>
     <td>{{ score.user__username }}</td>
     <td>{{ score.max_score }}</td>
     
 </tr>
+                
 {% endfor %}
         </tbody>
     </table>
