@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 {% extends "layout/base.html" %}
 {% load static %}
 {% block content %}
@@ -7,34 +7,37 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interactive Map Game</title>
-<link rel="stylesheet" href="{% static 'css/styles.css' %}">
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-        background-color: #ffffff;
-        overflow-y: hidden;
-        overflow-x: hidden;
-    }
-    svg path {
-        cursor: pointer;
-    }
-    svg path:hover {
-        fill: pink;
-    }
-    #game-box {
-        background-color: #0859C6;
-    width: 90%; 
-    margin: 0 auto; 
-    border: 2px solid #ccc; 
-    padding: 20px; 
-    box-sizing: border-box; 
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Map Game</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            overflow-y: auto; 
+            overflow-x: auto; 
+        }
+        svg path {
+            cursor: pointer;
+        }
+        svg path:hover {
+            fill: pink;
+        }
+        #game-box {
+            background-color: #0859C6;
+            width: 90%; 
+            margin: 0 auto; 
+            border: 2px solid #ccc; 
+            padding: 20px; 
+            box-sizing: border-box; 
+        }
+        #map-container {
+            max-width: 100%;
+            overflow: auto; 
+        }
+    </style>
 </head>
 
 <body>
@@ -143,7 +146,7 @@
         <div id="score">Score: <span id="score-value">0</span></div>
 <script>
  document.addEventListener('DOMContentLoaded', function () {
-    const countries = [ "Austria", "Belgium", "Bulgaria", "Bosnia and Herzegovina",
+    const countries = [ "Austria","Albania", "Belgium", "Bulgaria", "Bosnia and Herzegovina",
         "Belarus", "Switzerland", "Czech Republic", "Germany", "Denmark", "Estonia",
         "Finland", "United Kingdom", "Greece", "Croatia", "Hungary",
         "Ireland", "Iceland", "Italy","Lithuania", "Luxembourg",
@@ -156,15 +159,15 @@
     let startTime;
     let score = 0;
     let gameStarted = false;
-    let userId = 1; // Replace with actual user ID
+    let userId = 1; 
 
-    // Function to start the timer
+    
     function startTimer() {
         startTime = new Date().getTime();
         updateTimer();
     }
 
-    // Function to update the timer
+    
     function updateTimer() {
         const currentTime = new Date().getTime();
         const elapsedTime = currentTime - startTime;
@@ -174,50 +177,50 @@
         setTimeout(updateTimer, 1000);
     }
 
-    // Function to choose the next target country
+    
     function chooseNextTargetCountry() {
         const remainingCountries = countries.filter(country => !guessedCountries.includes(country));
         if (remainingCountries.length === 0) {
             console.log("Congratulations! You have guessed all the countries.");
-            // Check if the game is completed and record the score
+            
             handleGameCompletion();
             return;
         }
         targetCountry = remainingCountries[Math.floor(Math.random() * remainingCountries.length)];
-        updateTargetCountry(targetCountry); // Update HTML display
-        startTimer(); // Start the timer when a new country is chosen
+        updateTargetCountry(targetCountry); 
+        startTimer(); 
     }
 
-    // Function to update the target country display
+    
     function updateTargetCountry(newTargetCountry) {
         document.getElementById('target-country').innerText = newTargetCountry;
     }
 
-    // Function to check if all countries are guessed
+    
     function checkGameCompletion() {
         return guessedCountries.length === countries.length;
     }
 
-    // Function to handle game completion
+    
     function handleGameCompletion() {
     if (checkGameCompletion()) {
         console.log("Congratulations! You have guessed all the countries.");
-        // Record the score
+        
         recordScore(userId, score);
-        // Check if the "Play Again" button already exists
+        
         if (!document.getElementById('play-again-button')) {
-            // Create a "Play Again" button
+            
             const playAgainButton = document.createElement('button');
             playAgainButton.textContent = 'Play Again';
-            playAgainButton.id = 'play-again-button'; // Set an id for event delegation
-            // Append the button to a container element
+            playAgainButton.id = 'play-again-button'; 
+            
             const container = document.getElementById('play-again-container');
             container.appendChild(playAgainButton);
-            // Add event listener to the "Play Again" button
+            
             playAgainButton.addEventListener('click', function() {
                 location.reload(); // Reload the page
             });
-            // Display the score popup
+            
             showScorePopup(score);
         }
     }
@@ -251,7 +254,7 @@
         }, 3000); 
     }
 
-    // Event listener for clicking on countries
+    
     document.querySelectorAll('.country-path').forEach(country => {
         country.addEventListener('click', function () {
             console.log("Clicked country:", this.getAttribute('data-country'));
@@ -275,25 +278,24 @@
                     
                     handleGameCompletion();
                 } else {
-                    // If the clicked country is not the target country, you can add your logic here.
-                    // For example, you can display a message indicating that it's the wrong country.
+                    
                     console.log("Wrong country clicked!");
                 }
             }
         });
     });
 
-    // Start the game automatically when the page loads
+    
     chooseNextTargetCountry();
 
-    // Display the first target country in the console
+    
     console.log("First target country:", targetCountry);
 
-    // Update gameStarted flag
+    
     gameStarted = true;
 });
 
-// Function to record the score
+
 function recordScore(userId, score) {
     const requestBody = JSON.stringify({ userId, score });
     console.log('Request Body:', requestBody); 
